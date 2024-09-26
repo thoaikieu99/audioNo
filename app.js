@@ -2,13 +2,27 @@ const express = require("express");
 const dotenv = require("dotenv");
 dotenv.config({ path: "./config.env" });
 var cors = require("cors");
+const https = require("node:https");
+const fs = require("node:fs");
 
 const app = express();
 app.use(express.json());
+
+const certDir = `/home/ubuntu`;
+const domain = `kianai158.shop`;
+const options = {
+  key: fs.readFileSync(`./${domain}/privkey.pem`),
+  cert: fs.readFileSync(`./${domain}/fullchain.pem`),
+};
+
 const router = require("./app/routers");
-// const { sequelize } = require("./app/model");
-// sequelize.sync({ force: true });
-var whitelist = ["http://localhost:3000", "https://kianai99.shop/"];
+const AppError = require("./app/ultils/appErrors");
+const globalError = require("./app/controllers/erroeControllers");
+var whitelist = [
+  "http://localhost:3000",
+  "https://kianai158.shop",
+  "https://47.129.3.33",
+];
 var corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1 || !origin) {
@@ -23,6 +37,19 @@ app.use(cors(corsOptions));
 app.options("*", cors(corsOptions));
 
 app.use("/api/v1", router);
+app.get("*", (req, res, next) => {
+  next(new AppError(`Can't find ${req.originalUrl} on server! `, 404));
+});
+app.use(globalError);
+
+// var httpsServer = https.createServer(options, app);
+// const serve = httpsServer.listen(4000, () => {
+//   console.log(`http://localhost:${process.env.PORT}/api/v1`);
+// });
+
+// const { sequelize } = require("./app/model");
+
+// sequelize.sync({ force: false });
 
 /*
 
