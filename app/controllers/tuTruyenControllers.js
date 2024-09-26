@@ -27,7 +27,18 @@ const getOne = async (audio_id, user_id) => {
   });
   return find;
 };
-
+const getOneTT = catchAsync(async (req, res, next) => {
+  let getOneTT = await getOne(req.params.id, req.user.id);
+  if (!getOneTT) {
+    return next(new AppError("not Find one TT", 500));
+  }
+  res.status(200).json({
+    status: "success",
+    data: {
+      TuTruyen: getOneTT,
+    },
+  });
+});
 const creatTuTruyen = catchAsync(async (req, res, next) => {
   let getOneTT = await getOne(req.body.audio_id, req.user.id);
 
@@ -79,9 +90,10 @@ const updateTuTruyen = catchAsync(async (req, res, next) => {
   if (!getOneTT) {
     return next(new AppError("No TT found with that slug", 404));
   }
+
   let aa = arra(req);
   delete aa.audio_id;
-  console.log(aa);
+
   let updateTT = await getOneTT.update(aa);
 
   res.status(201).json({
@@ -113,4 +125,5 @@ module.exports = {
   creatTuTruyen,
   updateTuTruyen,
   deleteTT,
+  getOneTT,
 };
