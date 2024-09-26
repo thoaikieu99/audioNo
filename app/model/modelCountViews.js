@@ -35,7 +35,7 @@ const creatModelCountView = (sequelize) => {
     }
   );
   let Audio = sequelize.model("Audio");
-  Audio.hasMany(CountView, { foreignKey: "audio_id" });
+  Audio.hasMany(CountView, { foreignKey: "audio_id", onDelete: "cascade" });
   CountView.belongsTo(Audio, { foreignKey: "audio_id" });
   return CountView;
 };

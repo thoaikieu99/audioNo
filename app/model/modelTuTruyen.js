@@ -37,8 +37,8 @@ const creatModelTuTruyen = (sequelize) => {
   let Audio = sequelize.model("Audio");
   let User = sequelize.model("User");
 
-  TuTruyen.belongsTo(Audio, { foreignKey: "audio_id" });
-  TuTruyen.belongsTo(User, { foreignKey: "user_id" });
+  TuTruyen.belongsTo(Audio, { foreignKey: "audio_id", onDelete: "cascade" });
+  TuTruyen.belongsTo(User, { foreignKey: "user_id", onDelete: "cascade" });
   return TuTruyen;
 };
 module.exports = creatModelTuTruyen;
