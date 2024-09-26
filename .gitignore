@@ -3,5 +3,7 @@
 # dependencies
 /node_modules
 app.js
+/app.js
 config.env
+/config.env
 package-lock.json
