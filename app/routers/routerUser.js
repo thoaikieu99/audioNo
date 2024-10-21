@@ -5,6 +5,7 @@ const {
   updateUser,
   deleteUser,
   creatUser,
+  CheckLogin,
 } = require("../controllers/userControllers");
 const {
   signUp,
@@ -26,6 +27,7 @@ userRouter.post("/", creatUser);
 
 userRouter.use(protect);
 userRouter.post("/updatePasswordMe", updatePassword);
+userRouter.get("/checklg", CheckLogin);
 
 userRouter.use(restrictTo("0", "1"));
 userRouter.get("/:id", getUser);

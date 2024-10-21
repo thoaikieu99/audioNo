@@ -75,6 +75,20 @@ const deleteUser = catchAsync(async (req, res, next) => {
     },
   });
 });
+const CheckLogin = catchAsync(async (req, res, next) => {
+  let getone = req?.user?.username;
+
+  if (!getone) {
+    new AppError("You are not logged in! please log in to get access.", 401);
+  }
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      username: getone,
+    },
+  });
+});
 
 module.exports = {
   getAll,
@@ -82,4 +96,5 @@ module.exports = {
   creatUser,
   updateUser,
   deleteUser,
+  CheckLogin,
 };
